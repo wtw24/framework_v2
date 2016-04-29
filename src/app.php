@@ -6,13 +6,36 @@ $routes = new Routing\RouteCollection();
 
 $routes->add('hello', new Routing\Route('/hello/{name}', array(
     'name' => 'World',
-    '_controller' => 'render_template',
+    '_controller' => function ($request) {
+        return render_template($request);
+    }
 )));
 
 $routes->add('bye', new Routing\Route('/bye'));
 
 return $routes;
 
+/*
+
+// This is rather flexible as you can change the Response object
+// afterwards and you can even pass additional arguments to the template:
+
+$routes->add('hello', new Routing\Route('/hello/{name}', array(
+    'name' => 'World',
+    '_controller' => function ($request) {
+        // $foo will be available in the template
+        $request->attributes->set('foo', 'bar');
+
+        $response = render_template($request);
+
+        // change some header
+        $response->headers->set('Content-Type', 'text/plain');
+
+        return $response;
+    }
+)));
+
+*/
 
 /*
 
