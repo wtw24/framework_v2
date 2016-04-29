@@ -1,0 +1,12 @@
+{
+  "name": "wtw24/framework_v2",
+  "description": "PHP Framework built with Symfony Components",
+  "minimum-stability": "stable",
+  "license": "proprietary",
+  "authors": [
+    {
+      "name": "WebTools Wendland",
+      "email": "wtw24.com@gmail.com"
+    }
+  ]
+}
