@@ -9,6 +9,9 @@
       "email": "wtw24.com@gmail.com"
     }
   ],
+  "autoload": {
+    "psr-4": { "": "src/" }
+  },
   "require": {
     "symfony/http-foundation": "^3.0",
     "symfony/routing": "^3.0",
