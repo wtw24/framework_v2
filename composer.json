@@ -8,5 +8,8 @@
       "name": "WebTools Wendland",
       "email": "wtw24.com@gmail.com"
     }
-  ]
+  ],
+  "require": {
+    "symfony/http-foundation": "^3.0"
+  }
 }
