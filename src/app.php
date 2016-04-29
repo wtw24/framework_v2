@@ -1,71 +1,26 @@
 <?php
 
 use Symfony\Component\Routing;
+use Symfony\Component\HttpFoundation\Response;
+
+function is_leap_year($year = null) {
+    if (null === $year) {
+        $year = date('Y');
+    }
+
+    return 0 === $year % 400 || (0 === $year % 4 && 0 !== $year % 100);
+}
 
 $routes = new Routing\RouteCollection();
-
-$routes->add('hello', new Routing\Route('/hello/{name}', array(
-    'name' => 'World',
+$routes->add('leap_year', new Routing\Route('/is_leap_year/{year}', array(
+    'year' => null,
     '_controller' => function ($request) {
-        return render_template($request);
+        if (is_leap_year($request->attributes->get('year'))) {
+            return new Response('Yep, this is a leap year!');
+        }
+
+        return new Response('Nope, this is not a leap year.');
     }
 )));
-
-$routes->add('bye', new Routing\Route('/bye'));
 
 return $routes;
-
-/*
-
-// This is rather flexible as you can change the Response object
-// afterwards and you can even pass additional arguments to the template:
-
-$routes->add('hello', new Routing\Route('/hello/{name}', array(
-    'name' => 'World',
-    '_controller' => function ($request) {
-        // $foo will be available in the template
-        $request->attributes->set('foo', 'bar');
-
-        $response = render_template($request);
-
-        // change some header
-        $response->headers->set('Content-Type', 'text/plain');
-
-        return $response;
-    }
-)));
-
-*/
-
-/*
-
-use Symfony\Component\Routing;
-
-$generator = new Routing\Generator\UrlGenerator($routes, $context);
-
-echo $generator->generate('hello', array('name' => 'Fabien'));
-// outputs /hello/Fabien
-
-*/
-
-
-/*
-
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-
-echo $generator->generate(
-    'hello',
-    array('name' => 'Fabien'),
-    UrlGeneratorInterface::ABSOLUTE_URL
-);
-// outputs something like http://example.com/somewhere/hello/Fabien
-
-*/
-
-/*
-
-$dumper = new Routing\Matcher\Dumper\PhpMatcherDumper($routes);
-
-echo $dumper->dump();
-
- */
