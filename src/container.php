@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\Reference;
 $sc = new DependencyInjection\ContainerBuilder();
 $sc->register('context', 'Symfony\Component\Routing\RequestContext');
 $sc->register('matcher', 'Symfony\Component\Routing\Matcher\UrlMatcher')
-    ->setArguments(array($routes, new Reference('context')))
+    ->setArguments(array('%routes%', new Reference('context')))
 ;
 $sc->register('request_stack', 'Symfony\Component\HttpFoundation\RequestStack');
 $sc->register('resolver', 'Symfony\Component\HttpKernel\Controller\ControllerResolver');

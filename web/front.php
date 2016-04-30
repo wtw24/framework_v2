@@ -4,7 +4,6 @@ require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
 
-$routes = include __DIR__.'/../src/app.php';
 $sc = include __DIR__.'/../src/container.php';
 
 $sc->register('listener.string_response', 'Simplex\StringResponseListener');
@@ -16,6 +15,7 @@ $sc->getDefinition('dispatcher')
 //echo $sc->getParameter('debug');
 
 $sc->setParameter('charset', 'UTF-8');
+$sc->setParameter('routes', include __DIR__.'/../src/app.php');
 
 
 $request = Request::createFromGlobals();
