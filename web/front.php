@@ -3,9 +3,11 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing;
 use Symfony\Component\HttpKernel;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 $request = Request::createFromGlobals();
 $routes = include __DIR__.'/../src/app.php';
@@ -15,14 +17,9 @@ $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
 $dispatcher = new EventDispatcher();
-$dispatcher->addSubscriber(new Simplex\ContentLengthListener());
-$dispatcher->addSubscriber(new Simplex\GoogleListener());
+$dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher, new RequestStack()));
 
-$framework = new Simplex\Framework($dispatcher, $matcher, $resolver);
+$framework = new Simplex\Framework($dispatcher, $resolver);
 
-$framework = new HttpKernel\HttpCache\HttpCache(
-    $framework,
-    new HttpKernel\HttpCache\Store(__DIR__.'/../cache')
-);
-
-$framework->handle($request)->send();
+$response = $framework->handle($request);
+$response->send();
