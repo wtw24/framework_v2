@@ -19,6 +19,10 @@ $dispatcher->addSubscriber(new Simplex\ContentLengthListener());
 $dispatcher->addSubscriber(new Simplex\GoogleListener());
 
 $framework = new Simplex\Framework($dispatcher, $matcher, $resolver);
-$response = $framework->handle($request);
 
-$response->send();
+$framework = new HttpKernel\HttpCache\HttpCache(
+    $framework,
+    new HttpKernel\HttpCache\Store(__DIR__.'/../cache')
+);
+
+$framework->handle($request)->send();
