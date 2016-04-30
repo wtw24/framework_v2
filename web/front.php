@@ -12,6 +12,12 @@ $sc->getDefinition('dispatcher')
     ->addMethodCall('addSubscriber', array(new Reference('listener.string_response')))
 ;
 
+//$sc->setParameter('debug', true);
+//echo $sc->getParameter('debug');
+
+$sc->setParameter('charset', 'UTF-8');
+
+
 $request = Request::createFromGlobals();
 
 $response = $sc->get('framework')->handle($request);
