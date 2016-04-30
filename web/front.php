@@ -15,6 +15,16 @@ $matcher = new Routing\Matcher\UrlMatcher($routes, $context);
 $resolver = new HttpKernel\Controller\ControllerResolver();
 
 $dispatcher = new EventDispatcher();
+
+$dispatcher->addListener('response', function (Simplex\ResponseEvent $event) {
+    $response = $event->getResponse();
+    $headers = $response->headers;
+
+    if (!$headers->has('Content-Length') && !$headers->has('Transfer-Encoding')) {
+        $headers->set('Content-Length', strlen($response->getContent()));
+    }
+}, -255);
+
 $dispatcher->addListener('response', function (Simplex\ResponseEvent $event) {
     $response = $event->getResponse();
 
