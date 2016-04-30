@@ -19,12 +19,10 @@ $resolver = new HttpKernel\Controller\ControllerResolver();
 $dispatcher = new EventDispatcher();
 $dispatcher->addSubscriber(new HttpKernel\EventListener\RouterListener($matcher, new RequestStack()));
 
-$errorHandler = function (HttpKernel\Exception\FlattenException $exception) {
-    $msg = 'Something went wrong! ('.$exception->getMessage().')';
-
-    return new Response($msg, $exception->getStatusCode());
-};
-$dispatcher->addSubscriber(new HttpKernel\EventListener\ExceptionListener($errorHandler));
+$listener = new HttpKernel\EventListener\ExceptionListener(
+    'Calendar\\Controller\\ErrorController::exceptionAction'
+);
+$dispatcher->addSubscriber($listener);
 
 
 $framework = new Simplex\Framework($dispatcher, $resolver);
